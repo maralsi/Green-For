@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+
+from blog import settings
 from posts.views import green_for, main_page, completed_projects, post_list_view, post_detail_view
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,5 +28,4 @@ urlpatterns = [
     path('completed projects/', completed_projects),
     path('posts/', post_list_view),
     path('posts/<int:post_id>/', post_detail_view),
-
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

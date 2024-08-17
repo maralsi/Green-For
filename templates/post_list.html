@@ -1,11 +1,16 @@
 {%extends "main.html"%}
+{%load static%}
 
 <body>
 {%block content%}
 {% for post in posts%}
 
 <div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
+  {%if post.image%}
+  <img src="{{post.image.url}}" class="card-img-top" alt="...">
+  {%else%}
+  <img src="{%static 'staticfile.jpg'%}" class="card-img-top" alt="...">
+  {%endif%}
   <div class="card-body">
     <h5 class="card-title">Green For</h5>
     <p class="card-text">{{post.content}}</p>
