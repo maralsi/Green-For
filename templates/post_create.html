@@ -1,0 +1,37 @@
+{%extends 'main.html'%}
+
+
+{%block content%}
+
+<div class="container">
+    <form action= "" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input  type="submit" value="Submit">
+    </form>
+</div>
+
+{%endblock%}
+
+
+<!--<form style="padding: 20px" action="" method="post" enctype="multipart/form-data">-->
+<!--    {%csrf_token%}-->
+<!--       <label for="image"> Image</label>-->
+<!--    <p>-->
+<!--       <input type="file" name="image">-->
+<!--    </p>-->
+<!--        <label for="title">Name</label>-->
+<!--    <p>-->
+<!--        <input type="text" name="title">-->
+<!--    </p>-->
+<!--        <label for="content"> Content</label>-->
+<!--    <p>-->
+<!--        <input type="text" name="content">-->
+<!--    </p>-->
+<!--        <label for="rate"> Rate</label>-->
+<!--    <p>-->
+<!--        <input type="number" name="rate">-->
+<!--    </p>-->
+<!--    <button type="submit">Create Post</button>-->
+
+<!--</form>-->
