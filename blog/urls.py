@@ -18,15 +18,29 @@ from django.contrib import admin
 from django.urls import path
 
 from blog import settings
-from posts.views import green_for, main_view, completed_projects, post_list_view, post_detail_view, post_create
+from posts.views import (
+    green_for,
+    main_view,
+    completed_projects,
+    post_list_view,
+    post_detail_view,
+    post_create
+)
+
+from user.views import register_view, login_view
+
+
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('green for/', green_for),
-    path('main view/', main_view),
-    path('completed projects/', completed_projects),
-    path('posts/', post_list_view),
-    path('posts/<int:post_id>/', post_detail_view),
-    path('posts/create/', post_create),
+    path('green for/', green_for, name='green_for'),
+    path('main view/', main_view, name='main'),
+    path('completed projects/', completed_projects, name='completed_projects'),
+    path('posts/', post_list_view, name="post_list"),
+    path('posts/<int:post_id>/', post_detail_view, name='post_detail'),
+    path('posts/create/', post_create, name='post_create'),
+    path('register/', register_view, name='register'),
+    path('login/', login_view, name="login"),
+    path('logout/', login_view, name='logout')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
