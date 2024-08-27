@@ -28,6 +28,7 @@ def register_view(request):
         form.add_error('username', 'User or email exists')
         return render(request, 'user/register.html', context={'form': form})
 
+
 def login_view(request):
     if request.method == 'GET':
         form = LoginForm()
@@ -47,5 +48,3 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("/")
-
-

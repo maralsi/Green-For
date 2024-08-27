@@ -1,6 +1,6 @@
 from django import forms
 
-from posts.models import Post
+from posts.models import Post, Tag
 
 
 class PostForm(forms.Form):
@@ -38,3 +38,31 @@ class PostForm2(forms.ModelForm):
             'field': forms.Select(attrs={'class': 'form-control'}),
 
         }
+
+class SearchForm(forms.Form):
+    search = forms.CharField(
+        required=False,
+        min_length=1,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Search',
+                'class': 'form-control',
+            }))
+    tag = forms.ModelMultipleChoiceField(
+        required=False,
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    orderings = (
+        ('title', 'category'),
+        ('-title', 'category in reverse order'),
+        ('rate', 'rate'),
+        ('-rate', 'rate in reverse order'),
+        ('created_at', 'created_at'),
+        ('-created_at', 'created_at in reverse order')
+    )
+    orderings = forms.ChoiceField(
+        required=False,
+        choices=orderings,
+        widget=forms.Select(attrs={'placeholder': 'Ordering', 'class': 'form-control'})
+    )
