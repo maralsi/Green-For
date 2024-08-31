@@ -66,3 +66,8 @@ class SearchForm(forms.Form):
         choices=orderings,
         widget=forms.Select(attrs={'placeholder': 'Ordering', 'class': 'form-control'})
     )
+
+class PostUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title', 'content', 'category', 'language', 'field', 'image')

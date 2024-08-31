@@ -24,10 +24,21 @@ from posts.views import (
     completed_projects,
     post_list_view,
     post_detail_view,
-    post_create
+    post_create,
+    post_update_view,
+    TestView,
+    PostListView,
+    PostDetailView,
+    PostCreateView,
+
+
 )
 
-from user.views import register_view, login_view
+from user.views import (
+    register_view,
+    login_view,
+    profile_view
+)
 
 
 from django.conf.urls.static import static
@@ -42,5 +53,11 @@ urlpatterns = [
     path('posts/create/', post_create, name='post_create'),
     path('register/', register_view, name='register'),
     path('login/', login_view, name="login"),
-    path('logout/', login_view, name='logout')
+    path('logout/', login_view, name='logout'),
+    path('profile/', profile_view, name='profile'),
+    path('post/<int:post_id>/', post_update_view, name='post_update'),
+    path('test/', TestView.as_view(), name='test'),
+    path('posts2/', PostListView.as_view(), name='post_list2'),
+    path('post2/<int:pk>/', PostDetailView.as_view(), name='post_detail2'),
+    path('posts2/create/', PostCreateView.as_view(), name='post_create2'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,11 +1,25 @@
+from random import random
+
+from django.contrib.admin.templatetags.admin_list import search_form
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.forms import BaseModelForm
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import context
 
-from posts.forms import PostForm, PostForm2, SearchForm
+from posts.forms import PostForm, PostForm2, SearchForm, PostUpdateForm
 from posts.models import Post
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+
+
+
+class TestView(View):
+    def get(self, request):
+        return HttpResponse("Hello World")
+
 
 
 # Create your views here.
@@ -53,11 +67,24 @@ def post_list_view(request):
         return render(request, "post_list.html", context=context)
 
 
+
+class PostListView(ListView):
+    model = Post
+    form = SearchForm()
+    template_name = "post_list.html"
+    context_object_name = "posts"
+
 @login_required(login_url='login')
 def post_detail_view(request, post_id):
     if request.method == "GET":
         post = Post.objects.get(id=post_id)
     return render(request, "post_detail.html", context=context)
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "post_detail.html"
+    context_object_name = "post"
+    lookup_url_kwarg = "post_id"
 
 
 @login_required(login_url='login')
@@ -91,3 +118,30 @@ def post_create(request):
 
         )
         return redirect("/")
+
+class PostCreateView(CreateView):
+    model = Post
+    form_class = PostForm2
+    template_name = 'post_create.html'
+    success_url = '/posts2/'
+
+
+
+
+
+
+
+
+
+@login_required(login_url='login')
+def post_update_view(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.method == "GET":
+        form = PostUpdateForm(instance=post)
+        return render(request, "post_update.html", context={"form": form, "post": post})
+    if request.method == "POST":
+        form = PostUpdateForm(request.POST, request.FILES, instance=post)
+        if not form.is_valid():
+            return render(request, "post_update.html", context={"form": form, "post": post})
+        form.save()
+        return redirect("/profile/")

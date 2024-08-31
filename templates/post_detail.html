@@ -1,6 +1,5 @@
 {%extends "main.html"%}
 {%load static%}
-
 {%block content%}
 <div class="card" style="width: 18rem;">
     {%if post.image%}
@@ -11,8 +10,10 @@
   <div class="card-body">
     <h5 class="card-title">Green for </h5>
     <p class="card-text">{{post.content}}</p>
-      <p> class="card-text"> {{post.rate}}</p>
-    <a href="/posts/{{post.id}}" class="btn btn-primary">Посмотреть пост</a>
+    <p> class="card-text"> {{post.rate}}</p>
+    {%if post.author == request.user%}
+    <a href="/posts/{{post.id}}/update" class="btn btn-primary">Update Post</a>
+    {%endif%}
   </div>
 </div>
 

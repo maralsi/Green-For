@@ -2,6 +2,7 @@ from django import forms
 
 
 class RegisterForm(forms.Form):
+    image = forms.ImageField(required=False)
     username = forms.CharField(max_length=50)
     email = forms.EmailField()
     first_name = forms.CharField(max_length=50)
@@ -9,7 +10,7 @@ class RegisterForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
-    def clean(self):
+    def clear(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         confirm_password = cleaned_data.get("confirm_password")

@@ -1,5 +1,6 @@
 from django.db import models
 from pip._vendor.rich.markup import Tag
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -31,6 +32,7 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts", null=True)
     image = models.ImageField(null=True, blank=True, upload_to="posts")
     title = models.CharField(max_length=50)
     content = models.TextField(null=True, blank=True)

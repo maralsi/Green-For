@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from user.forms import RegisterForm, LoginForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from user.models import Profile
 from django.contrib.auth import authenticate, login, logout
 
 
@@ -11,22 +12,16 @@ def register_view(request):
         form = RegisterForm()
         return render(request, 'user/register.html', context={'form': form})
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = RegisterForm(request.POST, request.FILES)
         if not form.is_valid():
             return render(request, 'user/register.html', context={'form': form})
-    try:
-        User.objects.create_user(
-            username=form.cleaned_data['username'],
-            email=form.cleaned_data['email'],
-            first_name=form.cleaned_data['first_name'],
-            last_name=form.cleaned_data['last_name'],
-            password=form.cleaned_data['password'],
+        image = form.cleaned_data.pop('image')
+        form.cleaned_data.pop("confirm_password")
+        user = User.objects.create_user(
+            **form.cleaned_data,
         )
-        User.save()
-        return redirect("/")
-    except IntegrityError:
-        form.add_error('username', 'User or email exists')
-        return render(request, 'user/register.html', context={'form': form})
+        Profile.objects.create(user=user, image=image)
+        return redirect('/')
 
 
 def login_view(request):
@@ -48,3 +43,9 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("/")
+
+
+def profile_view(request):
+    if request.method == 'GET':
+        posts = request.user.posts.all()
+        return render(request, 'user/profile.html', context={'user': request.user})
